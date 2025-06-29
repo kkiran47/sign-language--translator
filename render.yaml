@@ -1,9 +1,6 @@
 services:
   - type: web
-    name: sign-translator
-    env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: python app.py
-    envVars:
-      - key: PYTHON_VERSION
-        value: 3.10
+    name: asl-sign-translator
+    env: docker
+    plan: free
+    autoDeploy: true
