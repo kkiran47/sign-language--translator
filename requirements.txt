@@ -1,7 +1,6 @@
+tensorflow==2.12.0
 flask
 numpy
 opencv-python-headless
 pillow
-tensorflow
 mediapipe
-
