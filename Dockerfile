@@ -1,20 +1,19 @@
-# Use official TensorFlow image with Python 3.10
+# Use official TensorFlow image with Python and GPU support (no GPU required)
 FROM tensorflow/tensorflow:2.12.0
 
 # Set working directory
 WORKDIR /app
 
-# Copy all files
+# Install required system packages
+RUN apt-get update && \
+    apt-get install -y libgl1-mesa-glx && \
+    pip install --no-cache-dir flask opencv-python-headless pillow mediapipe
+
+# Copy app code into container
 COPY . .
 
-# Install system & Python dependencies
-RUN apt-get update && apt-get install -y \
-    libgl1-mesa-glx \
-    && pip install --upgrade pip \
-    && pip install -r requirements.txt
+# Expose port
+EXPOSE 10000
 
-# Expose the port Flask runs on
-EXPOSE 5000
-
-# Start your Flask app
+# Start Flask app
 CMD ["python", "app.py"]
