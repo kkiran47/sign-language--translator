@@ -4,9 +4,10 @@ import base64
 import cv2
 from tensorflow.keras.models import load_model
 import mediapipe as mp
+import os
 
 app = Flask(__name__)
-model = load_model('model/asl_model.h5')  # adjust path if needed
+model = load_model('model/asl_model.h5')  # Adjust path if needed
 
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(static_image_mode=True, max_num_hands=1)
@@ -32,13 +33,11 @@ def predict():
             hand_landmarks = result.multi_hand_landmarks[0]
             h, w, _ = frame.shape
 
-            # Get bounding box
             x_min = min([lm.x for lm in hand_landmarks.landmark])
             y_min = min([lm.y for lm in hand_landmarks.landmark])
             x_max = max([lm.x for lm in hand_landmarks.landmark])
             y_max = max([lm.y for lm in hand_landmarks.landmark])
 
-            # Convert to pixel values
             x1, y1 = int(x_min * w), int(y_min * h)
             x2, y2 = int(x_max * w), int(y_max * h)
 
@@ -61,4 +60,5 @@ def predict():
         return jsonify({'error': str(e)})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 10000))  # ✅ Required for Render
+    app.run(debug=False, host='0.0.0.0', port=port)
