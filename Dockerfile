@@ -3,7 +3,6 @@ FROM tensorflow/tensorflow:2.12.0
 
 # Set working directory
 WORKDIR /app
-
 # Copy app code
 COPY . .
 
